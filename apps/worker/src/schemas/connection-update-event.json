@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "event": { "type": "string" },
+    "instance": { "type": "string" },
+    "data": {
+      "properties": {
+        "instance": { "type": "string" },
+        "state": { "type": "string" },
+        "statusReason": { "type": "uint16" }
+      }
+    },
+    "server_url": { "type": "string" },
+    "date_time": { "type": "timestamp" },
+    "apikey": { "type": "string" }
+  }
+}

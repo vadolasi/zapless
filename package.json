@@ -1,0 +1,35 @@
+{
+  "name": "zapless",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "packageManager": "bun@1.2.8",
+  "scripts": {
+    "dev": "turbo dev --filter=worker --filter=web"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0"
+  },
+  "peerDependencies": {
+    "@types/bun": "^1.2.10",
+    "typescript": "^5.8.3"
+  },
+  "workspaces": ["apps/*"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@prisma/client",
+    "@prisma/engines",
+    "better-sqlite3",
+    "esbuild",
+    "grpc-tools",
+    "prisma",
+    "protobufjs",
+    "protoc-gen-js",
+    "sharp",
+    "web",
+    "worker"
+  ],
+  "patchedDependencies": {
+    "drizzle-orm@0.42.0": "patches/drizzle-orm@0.42.0.patch"
+  }
+}

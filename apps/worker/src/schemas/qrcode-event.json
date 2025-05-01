@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "event": { "enum": ["qrcode.updated"] },
+    "instance": { "type": "string" },
+    "data": {
+      "properties": {
+        "qrcode": {
+          "properties": {
+            "instance": { "type": "string" },
+            "pairingCode": { "type": "string", "nullable": true },
+            "code": { "type": "string"  },
+            "base64": { "type": "string" }
+          }
+        }
+      }
+    },
+    "server_url": { "type": "string" },
+    "date_time": { "type": "string" },
+    "apikey": { "type": "string" }
+  }
+}

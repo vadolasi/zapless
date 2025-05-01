@@ -1,0 +1,6 @@
+[submodule "evolution-api"]
+	path = evolution-api
+	url = https://github.com/EvolutionAPI/evolution-api
+[submodule "docs-evolution"]
+	path = docs-evolution
+	url = git@github.com:EvolutionAPI/docs-evolution.git
