@@ -3,10 +3,16 @@ import { treaty } from '@elysiajs/eden'
 import { createAuthClient } from "better-auth/react"
 import { emailOTPClient, apiKeyClient, passkeyClient } from "better-auth/client/plugins"
 
-const { api: client } = treaty<App>(window.location.origin)
+let url = "http://localhost:3000"
+
+if (window !== undefined) {
+  url = window.location.origin
+}
+
+const { api: client } = treaty<App>(url)
 
 export const authClient = createAuthClient({
-  baseURL: window.location.origin,
+  baseURL: url,
   basePath: "/api/auth",
   plugins: [
     emailOTPClient(),
