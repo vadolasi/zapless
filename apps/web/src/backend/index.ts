@@ -33,7 +33,7 @@ const app = new Elysia({ prefix: "/api" })
   .use(serverTiming())
   .use(
     cors({
-      origin: "http://localhost:3000",
+      origin: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true
     })
