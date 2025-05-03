@@ -3,4 +3,4 @@
 	url = https://github.com/EvolutionAPI/evolution-api
 [submodule "docs-evolution"]
 	path = docs-evolution
-	url = git@github.com:EvolutionAPI/docs-evolution.git
+	url = https://github.com/EvolutionAPI/docs-evolution.git
