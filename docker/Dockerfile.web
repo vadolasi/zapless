@@ -1,0 +1,20 @@
+FROM oven/bun:1-slim AS base
+
+RUN apt-get update -y && apt-get install -y openssl
+
+WORKDIR /app
+
+COPY . .
+
+WORKDIR /app/apps/web
+RUN bun install --frozen-lockfile --filter web
+RUN bun run build
+
+FROM base AS runner
+WORKDIR /app
+COPY --from=base . .
+WORKDIR /app/apps/web
+
+EXPOSE 3000
+
+CMD ["bun", "run", "start"]

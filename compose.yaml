@@ -5,88 +5,88 @@ services:
     ports:
       - "8080:8080"
     environment:
-      AUTHENTICATION_API_KEY: evolution_api_key
-      DATABASE_ENABLED: true
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY}
+      DATABASE_ENABLED: "true"
       DATABASE_PROVIDER: postgresql
-      DATABASE_CONNECTION_URI: postgresql://user:password@postgres:5432/db?schema=public
+      DATABASE_CONNECTION_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DATABASE}?schema=public
       DATABASE_CONNECTION_CLIENT_NAME: evolution_exchange
-      DATABASE_SAVE_DATA_INSTANC: true
-      DATABASE_SAVE_DATA_NEW_MESSAGE: true
-      DATABASE_SAVE_MESSAGE_UPDATE: true
-      DATABASE_SAVE_DATA_CONTACTS: true
-      DATABASE_SAVE_DATA_CHATS: true
-      DATABASE_SAVE_DATA_LABELS: true
-      DATABASE_SAVE_DATA_HISTORIC: true
-      CACHE_REDIS_ENABLED: true
-      CACHE_REDIS_URI: redis://redis:6379/6
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+      DATABASE_SAVE_DATA_LABELS: "true"
+      DATABASE_SAVE_DATA_HISTORIC: "true"
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: redis://default:${REDIS_PASSWORD}@redis:6379/6
       CACHE_REDIS_PREFIX_KEY: evolution
-      CACHE_REDIS_SAVE_INSTANCES: false
-      CACHE_LOCAL_ENABLED: false
-      RABBITMQ_ENABLED: true
-      RABBITMQ_URI: amqp://user:password@rabbitmq:5672?frameMax=0
+      CACHE_REDIS_SAVE_INSTANCES: "true"
+      AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: "false"
+      QRCODE_COLOR: "#000000"
+      QRCODE_LIMIT: 10
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_URI: amqp://${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD}@rabbitmq:5672?frameMax=0
       RABBITMQ_EXCHANGE_NAME: evolution_exchange
-      RABBITMQ_GLOBAL_ENABLED: true
-      RABBITMQ_EVENTS_APPLICATION_STARTUP: true
-      RABBITMQ_EVENTS_INSTANCE_CREATE: true
-      RABBITMQ_EVENTS_INSTANCE_DELETE: true
-      RABBITMQ_EVENTS_QRCODE_UPDATED: true
-      RABBITMQ_EVENTS_MESSAGES_SET: true
-      RABBITMQ_EVENTS_MESSAGES_UPSERT: true
-      RABBITMQ_EVENTS_MESSAGES_EDITED: true
-      RABBITMQ_EVENTS_MESSAGES_UPDATE: true
-      RABBITMQ_EVENTS_MESSAGES_DELETE: true
-      RABBITMQ_EVENTS_SEND_MESSAGE: true
-      RABBITMQ_EVENTS_CONTACTS_SET: true
-      RABBITMQ_EVENTS_CONTACTS_UPSERT: true
-      RABBITMQ_EVENTS_CONTACTS_UPDATE: true
-      RABBITMQ_EVENTS_PRESENCE_UPDATE: true
-      RABBITMQ_EVENTS_CHATS_SET: true
-      RABBITMQ_EVENTS_CHATS_UPSERT: true
-      RABBITMQ_EVENTS_CHATS_UPDATE: true
-      RABBITMQ_EVENTS_CHATS_DELETE: true
-      RABBITMQ_EVENTS_GROUPS_UPSERT: true
-      RABBITMQ_EVENTS_GROUP_UPDATE: true
-      RABBITMQ_EVENTS_GROUP_PARTICIPANTS_UPDATE: true
-      RABBITMQ_EVENTS_CONNECTION_UPDATE: true
-      RABBITMQ_EVENTS_CALL: true
-      RABBITMQ_EVENTS_TYPEBOT_START: true
-      RABBITMQ_EVENTS_TYPEBOT_CHANGE_STATUS: true
+      RABBITMQ_GLOBAL_ENABLED: "true"
+      RABBITMQ_EVENTS_APPLICATION_STARTUP: "true"
+      RABBITMQ_EVENTS_INSTANCE_CREATE: "true"
+      RABBITMQ_EVENTS_INSTANCE_DELETE: "true"
+      RABBITMQ_EVENTS_QRCODE_UPDATED: "true"
+      RABBITMQ_EVENTS_MESSAGES_SET: "true"
+      RABBITMQ_EVENTS_MESSAGES_UPSERT: "true"
+      RABBITMQ_EVENTS_MESSAGES_EDITED: "true"
+      RABBITMQ_EVENTS_MESSAGES_UPDATE: "true"
+      RABBITMQ_EVENTS_MESSAGES_DELETE: "true"
+      RABBITMQ_EVENTS_SEND_MESSAGE: "true"
+      RABBITMQ_EVENTS_CONTACTS_SET: "true"
+      RABBITMQ_EVENTS_CONTACTS_UPSERT: "true"
+      RABBITMQ_EVENTS_CONTACTS_UPDATE: "true"
+      RABBITMQ_EVENTS_PRESENCE_UPDATE: "true"
+      RABBITMQ_EVENTS_CHATS_SET: "true"
+      RABBITMQ_EVENTS_CHATS_UPSERT: "true"
+      RABBITMQ_EVENTS_CHATS_UPDATE: "true"
+      RABBITMQ_EVENTS_CHATS_DELETE: "true"
+      RABBITMQ_EVENTS_GROUPS_UPSERT: "true"
+      RABBITMQ_EVENTS_GROUP_UPDATE: "true"
+      RABBITMQ_EVENTS_GROUP_PARTICIPANTS_UPDATE: "true"
+      RABBITMQ_EVENTS_CONNECTION_UPDATE: "true"
+      RABBITMQ_EVENTS_CALL: "true"
+      RABBITMQ_EVENTS_TYPEBOT_START: "true"
+      RABBITMQ_EVENTS_TYPEBOT_CHANGE_STATUS: "true"
     volumes:
       - evolution_instances:/evolution/instances
     depends_on:
-      postgres:
-        condition: service_started
-      redis:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
+      - postgres
+      - redis
+      - rabbitmq
 
   postgres:
-    image: postgres:alpine
+    image: postgres:17-alpine
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
+    command: --requirepass ${REDIS_PASSWORD}
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
 
   rabbitmq:
-    image: rabbitmq:management-alpine
+    image: rabbitmq:4-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
@@ -94,7 +94,7 @@ services:
       interval: 5s
       timeout: 30s
       retries: 10
-  
+
   socketi:
     image: quay.io/soketi/soketi:latest-16-alpine
     ports:
@@ -102,9 +102,10 @@ services:
     environment:
       SOKETI_DB_REDIS_HOST: redis
       SOKETI_DB_REDIS_PORT: 6379
-      SOKETI_DEFAULT_APP_ID: default
-      SOKETI_DEFAULT_APP_KEY: default
-      SOKETI_DEFAULT_APP_SECRET: secret
+      SOKETI_DB_REDIS_PASSWORD: ${REDIS_PASSWORD}
+      SOKETI_DEFAULT_APP_ID: ${SOKETI_APP_ID}
+      SOKETI_DEFAULT_APP_KEY: ${SOKETI_APP_KEY}
+      SOKETI_DEFAULT_APP_SECRET: ${SOKETI_APP_SECRET}
       SOKETI_RATE_LIMITER_DRIVER: redis
       SOKETI_CACHE_DRIVER: redis
       SOKETI_ADAPTER_REDIS_PREFIX: socketi

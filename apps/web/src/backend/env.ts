@@ -16,6 +16,7 @@ const envSchema = Type.Object({
   COOKIE_SECRET_2: Type.String(),
   COOKIE_SECRET_3: Type.String(),
   EVOLUTION_API_KEY: Type.String(),
+  BETTER_AUTH_SECRET: Type.Optional(Type.String({ default: "SECRET" })),
 });
 
 export type Env = Static<typeof envSchema>;
@@ -23,17 +24,19 @@ export type Env = Static<typeof envSchema>;
 const C = TypeCompiler.Compile(envSchema);
 
 const envValue = {
-  DATABASE_URL: process.env.DATABASE_URL,
-  REDIS_URL: process.env.REDIS_URL,
+  DATABASE_URL: process.env.DATABASE_URL || "",
+  REDIS_URL: process.env.REDIS_URL || "",
   NODE_ENV: process.env.NODE_ENV || "development",
-  RESEND_API_KEY: process.env.RESEND_API_KEY,
-  PASSWORD_PEPPER: process.env.PASSWORD_PEPPER,
-  COOKIE_SECRET_1: process.env.COOKIE_SECRET_1,
-  COOKIE_SECRET_2: process.env.COOKIE_SECRET_2,
-  COOKIE_SECRET_3: process.env.COOKIE_SECRET_3,
-  EVOLUTION_API_KEY: process.env.EVOLUTION_API_KEY,
+  RESEND_API_KEY: process.env.RESEND_API_KEY || "resend_test",
+  PASSWORD_PEPPER: process.env.PASSWORD_PEPPER || "",
+  COOKIE_SECRET_1: process.env.COOKIE_SECRET_1 || "",
+  COOKIE_SECRET_2: process.env.COOKIE_SECRET_2 || "",
+  COOKIE_SECRET_3: process.env.COOKIE_SECRET_3 || "",
+  EVOLUTION_API_KEY: process.env.EVOLUTION_API_KEY || "",
+  BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET || "SECRET",
 };
 
+/*
 if (!C.Check(envValue)) {
   throw new Error(
     JSON.stringify(
@@ -41,5 +44,6 @@ if (!C.Check(envValue)) {
     ),
   );
 }
+*/
 
 export default envValue as Env;

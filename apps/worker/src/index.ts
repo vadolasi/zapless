@@ -7,25 +7,27 @@ import QRCodeEventSchema from "./schemas/qrcode-event.json"
 import ConnectionUpdatedSchema from "./schemas/connection-update-event.json"
 import { RedisClient } from "bun"
 
-const redis = new RedisClient(process.env.REDIS_URL ?? "redis://localhost:6379")
+const redis = new RedisClient(process.env.REDIS_URL!)
 
 const pusher = new Pusher({
-  host: "localhost",
-  port: "6001",
+  host: process.env.SOKETI_HOST!,
+  port: process.env.SOKETI_PORT!,
   useTLS: false,
   cluster: "mt1",
-  appId: "default",
-  key: "default",
-  secret: "secret"
+  appId: process.env.SOKETI_APP_ID!,
+  key: process.env.SOKETI_APP_KEY!,
+  secret: process.env.SOKETI_APP_SECRET!
 })
 
 const ajv = new Ajv()
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.DATABASE_CONNECTION_URI
+})
 
 await prisma.$connect()
 
-const ampqClient = await amqplib.connect("amqp://user:password@localhost:5672")
+const ampqClient = await amqplib.connect(process.env.RABBITMQ_URL!)
 const channel = await ampqClient.createChannel()
 
 const parseQRCodeData = ajv.compileParser<JTDDataType<typeof QRCodeEventSchema>>(QRCodeEventSchema)

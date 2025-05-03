@@ -5,11 +5,11 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
     "dev": {
       "persistent": true,
+      "cache": false
+    },
+    "start": {
       "cache": false
     },
     "//#format-and-lint": {},

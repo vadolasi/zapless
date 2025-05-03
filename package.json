@@ -3,15 +3,17 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "packageManager": "bun@1.2.8",
+  "packageManager": "bun@1.2.11",
   "scripts": {
-    "dev": "turbo dev --filter=worker --filter=web"
+    "dev": "turbo dev --filter=worker --filter=web",
+    "start:web": "turbo run start --filter=web",
+    "start:worker": "turbo run start --filter=worker"
   },
   "devDependencies": {
-    "turbo": "^2.5.0"
+    "turbo": "^2.5.2"
   },
   "peerDependencies": {
-    "@types/bun": "^1.2.10",
+    "bun-types": "^1.2.11",
     "typescript": "^5.8.3"
   },
   "workspaces": ["apps/*"],
@@ -19,12 +21,8 @@
     "@biomejs/biome",
     "@prisma/client",
     "@prisma/engines",
-    "better-sqlite3",
     "esbuild",
-    "grpc-tools",
     "prisma",
-    "protobufjs",
-    "protoc-gen-js",
     "sharp",
     "web",
     "worker"

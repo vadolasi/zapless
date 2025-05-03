@@ -11,6 +11,7 @@ import OTPEmail from "@/emails/otp"
 const resend = new Resend(env.RESEND_API_KEY)
 
 export const auth = betterAuth({
+  secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg"
   }),

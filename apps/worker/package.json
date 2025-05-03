@@ -1,8 +1,8 @@
 {
   "name": "worker",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --bun --watch src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
     "postinstall": "prisma generate --schema=../../evolution-api/prisma/postgresql-schema.prisma"
   },
   "dependencies": {
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.7",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prisma": "^6.7.0"
   }
 }
