@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "@/app/components/link";
-import { useParams } from "next/navigation";
 import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 
