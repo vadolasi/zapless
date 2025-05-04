@@ -1,6 +1,6 @@
 services:
   evolution-api:
-    image: atendai/evolution-api:v2.1.2
+    image: atendai/evolution-api:v2.2.3
     restart: always
     ports:
       - "8080:8080"
