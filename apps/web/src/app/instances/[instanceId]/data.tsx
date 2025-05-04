@@ -10,11 +10,11 @@ const Instance: React.FC<Readonly<{ instanceId: string, status: "close" | "conne
 
   useEffect(() => {
     const pusher = new Pusher("default", {
-      wsHost: "localhost",
-      wsPort: 6001,
+      wsHost: process.env.NEXT_PUBLIC_PUSHER_HOST ?? "localhost",
+      wsPort: Number(process.env.NEXT_PUBLIC_PUSHER_PORT ?? "6001"),
       forceTLS: false,
       disableStats: true,
-      enabledTransports: ["ws"],
+      enabledTransports: ["ws", "wss"],
       cluster: "mt1",
       /*
       userAuthentication: { endpoint: "/api/pusher-auth", transport: "ajax" },
