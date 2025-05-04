@@ -37,7 +37,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!email) {
-      router.push("/register")
+      router.push("/login")
     }
   }, [email])
 
@@ -56,7 +56,6 @@ export default function Page() {
     },
     onSuccess: () => {
       localStorage.removeItem("auth:email")
-      router.push("/login")
       toast.success("Email verified successfully")
     },
     onError: (error) => {

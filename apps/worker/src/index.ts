@@ -22,7 +22,11 @@ const pusher = new Pusher({
 const ajv = new Ajv()
 
 const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_CONNECTION_URI
+  datasources: {
+    db: {
+      url: process.env.DATABASE_CONNECTION_URI
+    }
+  }
 })
 
 await prisma.$connect()
@@ -33,7 +37,7 @@ const channel = await ampqClient.createChannel()
 const parseQRCodeData = ajv.compileParser<JTDDataType<typeof QRCodeEventSchema>>(QRCodeEventSchema)
 const parseConnectionUpdateData = ajv.compileParser<JTDDataType<typeof ConnectionUpdatedSchema>>(ConnectionUpdatedSchema)
 
-await channel.consume("connection.update", async (msg) => {
+await channel.consume("evolution.connection.update", async (msg) => {
   if (!msg) return
 
   const data = parseConnectionUpdateData(msg.content.toString())
@@ -45,7 +49,7 @@ await channel.consume("connection.update", async (msg) => {
   await pusher.trigger(`instance.${data.instance}`, "connection.update", data.data)
 })
 
-await channel.consume("qrcode.updated", async (msg) => {
+await channel.consume("evolution.qrcode.updated", async (msg) => {
   if (!msg) return
 
   const data = parseQRCodeData(msg.content.toString())
@@ -58,4 +62,12 @@ await channel.consume("qrcode.updated", async (msg) => {
   await redis.set(`qrcode:${data.instance}`, data.data.qrcode.base64 as string, "EX", 60 * 60 * 5)
 
   channel.ack(msg)
+})
+
+await channel.consume("evolution.labels.association", async (msg) => {
+  if (!msg) return
+
+  const data = JSON.parse(msg.content.toString())
+
+  console.log(data)
 })
