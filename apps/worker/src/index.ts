@@ -71,3 +71,11 @@ await channel.consume("evolution.labels.association", async (msg) => {
 
   console.log(data)
 })
+
+await channel.consume("evolution.labels.edit", async (msg) => {
+  if (!msg) return
+
+  const data = JSON.parse(msg.content.toString())
+
+  console.log(data)
+})
